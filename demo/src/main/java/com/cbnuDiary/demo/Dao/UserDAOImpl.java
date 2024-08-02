@@ -14,8 +14,8 @@ public class UserDAOImpl implements UserDAO {
         this.userRepository=userRepository;
     }
     @Override
-    public boolean insert(UserDTO userDto){
-        UserEntity userEntity = new UserEntity(userDto.getName(),userDto.getEmail());
+    public boolean insert(UserEntity userEntity){
+
         userRepository.save(userEntity);
 
         return true;

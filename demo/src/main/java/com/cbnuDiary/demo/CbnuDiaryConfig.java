@@ -14,6 +14,7 @@ public class CbnuDiaryConfig {
 
     private final UserRepository userRepository;
     private final DiaryRepository diaryRepository;
+
     public CbnuDiaryConfig(UserRepository userRepository,DiaryRepository diaryRepository){
         this.userRepository=userRepository;
         this.diaryRepository = diaryRepository;
