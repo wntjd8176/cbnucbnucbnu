@@ -10,7 +10,8 @@ import lombok.Setter;
 public class UserDTO {
     public String name;
     public String email;
-
+    public String userID;
+    public String userPW;
     public String getEmail() {
         return email;
     }
@@ -18,8 +19,15 @@ public class UserDTO {
     public String getName() {
         return name;
     }
+    public String getUserID(){return userID;}
+    public String getUserPW(){return userPW;}
 
-    public static UserDTO from (UserEntity userEntity){
+
+
+    /*public static UserDTO from (UserEntity userEntity){
+        if (userEntity == null) {
+            return null;
+        }
         return new UserDTO(userEntity.getName());
-    }
+    }*/
 }

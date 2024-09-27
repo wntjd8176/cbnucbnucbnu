@@ -8,6 +8,7 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
+	sourceCompatibility = '17'
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
@@ -28,6 +29,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'net.sourceforge.tess4j:tess4j:4.5.4'
+	//implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+	//implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'

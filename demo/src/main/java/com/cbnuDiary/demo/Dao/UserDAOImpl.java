@@ -6,7 +6,9 @@ import com.cbnuDiary.demo.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.Optional;
+
+
 public class UserDAOImpl implements UserDAO {
     UserRepository userRepository;
     @Autowired
@@ -20,6 +22,12 @@ public class UserDAOImpl implements UserDAO {
 
         return true;
 
+    }
+
+    @Override
+    public boolean existByUserID(String tmpUserID){
+        Optional<UserEntity> user = userRepository.findByuserID(tmpUserID);
+        return user.isPresent(); // Optional<UserEntity>가 값이 있으면 true, 없으면 false 반환
 
     }
 }

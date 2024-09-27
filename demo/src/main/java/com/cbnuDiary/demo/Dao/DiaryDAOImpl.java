@@ -9,20 +9,28 @@ import com.cbnuDiary.demo.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class DiaryDAOImpl implements DiaryDAO{
+
+public class DiaryDAOImpl implements DiaryDAO {
     DiaryRepository diaryRepository;
+
     @Autowired
-    public DiaryDAOImpl(DiaryRepository diaryRepository){
-        this.diaryRepository=diaryRepository;
+    public DiaryDAOImpl(DiaryRepository diaryRepository) {
+        this.diaryRepository = diaryRepository;
     }
+
     @Override
-    public boolean insert(DiaryDTO diaryDto){
-        DiaryEntity  diaryEntity = new DiaryEntity(diaryDto.getDiaryID(),diaryDto.getDiaryTitle());
+    public boolean insert(DiaryDTO diaryDto) {
+        DiaryEntity diaryEntity = new DiaryEntity(diaryDto.getDiaryID(), diaryDto.getDiaryTitle());
         diaryRepository.save(diaryEntity);
 
         return true;
 
-
     }
+   @Override
+   public void deleteByDtitle(DiaryEntity diaryEntity){
+        diaryRepository.deleteBydtitle(diaryEntity.getDiaryTitle());
+
+   }
+
+
 }

@@ -6,15 +6,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DiaryDTO {
- private Long diaryID;
- private String diaryTitle;
+ public Long diaryID;
+ public String dtitle;
+ public String diaryContent;
+
 
     public Long getDiaryID() {
         return diaryID;
     }
 
     public String getDiaryTitle() {
-        return diaryTitle;
+        return dtitle;
     }
-
+    public String getDiaryContent(){return diaryContent;}
 }

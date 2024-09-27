@@ -1,18 +1,31 @@
 package com.cbnuDiary.demo.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 public class UserChartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long chartID;
-    public Long userNumberID;
-    public String userID;
-    public String favorite
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userID")
+    private UserEntity userEntity;
 
+    public String favoriteWord;
+    public String unFavoriteWord;
+
+    public UserChartEntity(){}
+
+    public void setFavoriteWord(String favoriteWord) {
+        this.favoriteWord = favoriteWord;
+    }
+
+    public void setUnFavoriteWord(String unFavoriteWord) {
+        this.unFavoriteWord = unFavoriteWord;
+    }
 }

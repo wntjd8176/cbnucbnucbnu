@@ -4,4 +4,5 @@ import com.cbnuDiary.demo.Entity.UserEntity;
 
 public interface UserDAO {
     public boolean insert(UserEntity userEntity);
+    public boolean existByUserID(String tmpUserID);
 }

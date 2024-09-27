@@ -8,12 +8,17 @@ import com.cbnuDiary.demo.Repository.DiaryRepository;
 import com.cbnuDiary.demo.Repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class CbnuDiaryConfig {
 
     private final UserRepository userRepository;
     private final DiaryRepository diaryRepository;
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
     public CbnuDiaryConfig(UserRepository userRepository,DiaryRepository diaryRepository){
         this.userRepository=userRepository;
