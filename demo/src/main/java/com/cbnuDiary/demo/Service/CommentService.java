@@ -11,4 +11,7 @@ import org.springframework.stereotype.Service;
 public interface CommentService {
     public CommentEntity convertToEntity(CommentDTO commentDTO);
     public void writeComment(UserDTO userDTO);
+    public void deleteComment(String nickName,String cTitle);
+    public void serachComment();
+    public void readComment();
 }

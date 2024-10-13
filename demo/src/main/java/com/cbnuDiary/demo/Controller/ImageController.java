@@ -14,31 +14,34 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 @RestController
+@RequestMapping("/ocr")
 public class ImageController {
     @Autowired
     UserService userService;
-/*
+
     @PostMapping("/upload")  //안스에서 넘긴 사진파일을 MultipartFile 인터페이스로 서버가 받는다
-    public ResponseEntity<String> handleFileUpload(@RequestParam("file")MultipartFile file){
-        try{
-            String extractedText = extractTextFromImage(file);
+    public ResponseEntity<String>pregCertify(@RequestParam("image")MultipartFile image, @RequestParam("userID")String userID) {
 
-            if (extractedText.contains("임산부")) {
-                userService.updatePregStatus();
-            }
+        try {
+            Tesseract tesseract = new Tesseract();
 
-            return ResponseEntity.ok("Image processed successfully");
-        } catch (TesseractException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing image");
+            tesseract.setDatapath("C://tessdata//tessdata_best-main");
+            tesseract.setLanguage("kor");
+
+            File tempFile = File.createTempFile("tempImage", ".jpg");
+            image.transferTo(tempFile);
+
+            String extractedText = tesseract.doOCR(tempFile);
+            tempFile.delete();
+
+            userService.updatePregStatus(extractedText,userID);
+
+            return ResponseEntity.ok("OCR 처리 완료");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+
+
+    }
     }
 
-    private String extractTextFromImage(MultipartFile file) throws Exception {
-        File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + file.getOriginalFilename());
-        file.transferTo(convFile);
-
-        ITesseract tesseract = new Tesseract();
-        tesseract.setDatapath("/C:/Users/wntjd/Downloads/tesseract-main/tesseract-main/tessdata");
-        return tesseract.doOCR(convFile);
-    }*/
-}

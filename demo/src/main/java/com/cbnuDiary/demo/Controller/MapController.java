@@ -1,9 +1,19 @@
 package com.cbnuDiary.demo.Controller;
 
+import com.cbnuDiary.demo.Dto.CounselingCenter;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.springframework.web.bind.annotation.*;
+
+
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/map")
@@ -24,9 +34,9 @@ public class MapController {
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-            ResponseBody responseBody = response.body();
+            okhttp3.ResponseBody responseBody = response.body();
             if (responseBody != null) {
-                String jsonData = responseBody.string();
+                String jsonData = response.body().string();
                 Gson gson = new Gson();
                 List<CounselingCenter> centers = new ArrayList<>();
 

@@ -12,6 +12,11 @@ public class UserDTO {
     public String email;
     public String userID;
     public String userPW;
+    public String babyName;
+
+    public String eventDay;
+
+    public String getBabyName(){return babyName;}
     public String getEmail() {
         return email;
     }

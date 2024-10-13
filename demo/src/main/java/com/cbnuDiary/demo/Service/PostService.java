@@ -10,4 +10,9 @@ import org.springframework.stereotype.Service;
 public interface PostService {
     public PostEntity convertToEntity(PostDTO postDTO);
     public void writePost(UserDTO userDTO, PostDTO postDTO);
+    public void deletePost();
+
+    public void readPost();
+
+    public void searchPost();
 }

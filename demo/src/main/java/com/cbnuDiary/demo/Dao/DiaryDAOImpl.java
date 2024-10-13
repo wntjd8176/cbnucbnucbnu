@@ -20,15 +20,19 @@ public class DiaryDAOImpl implements DiaryDAO {
 
     @Override
     public boolean insert(DiaryDTO diaryDto) {
-        DiaryEntity diaryEntity = new DiaryEntity(diaryDto.getDiaryID(), diaryDto.getDiaryTitle());
+        DiaryEntity diaryEntity = new DiaryEntity(diaryDto.getDiaryID(), diaryDto.getDtitle());
         diaryRepository.save(diaryEntity);
 
         return true;
 
     }
+    @Override
+    public void update(DiaryEntity diaryEntity){
+        diaryRepository.save(diaryEntity);
+    }
    @Override
    public void deleteByDtitle(DiaryEntity diaryEntity){
-        diaryRepository.deleteBydtitle(diaryEntity.getDiaryTitle());
+        diaryRepository.deleteBydtitle(diaryEntity.getDtitle());
 
    }
 

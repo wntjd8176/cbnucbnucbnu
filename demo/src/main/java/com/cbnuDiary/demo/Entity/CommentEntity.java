@@ -15,4 +15,8 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long commentID;
 
+    public String cTitle;
+    public String cContents;
+    public String emtions;
+    public CommentEntity(){}
 }

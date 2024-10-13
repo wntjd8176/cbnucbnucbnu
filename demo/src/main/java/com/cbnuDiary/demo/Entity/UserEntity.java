@@ -22,9 +22,13 @@ public class UserEntity {
 
     public String name;
     public String email;
-    public boolean pregStatus;
+    public int pregStatus;
 
     public String userPW;
+
+    public String babyName;
+
+    public String eventDay;
 
     public void setuserID(String userID){
         this.userID = userID;
@@ -38,9 +42,28 @@ public class UserEntity {
     public void setemail(String email){
         this.email = email;
     }
+    public void setPregStatus(int pregStatus){this.pregStatus = pregStatus;}
+
+    public String getUserPW(){return userPW;}
+    public String getUserID(){return userID;}
+
+    public void setBabyName(String babyName) {
+        this.babyName = babyName;
+    }
+
+    public String getBabyName() {
+        return babyName;
+    }
+
+    public int getPregStatus(){return pregStatus;}
+    public void setEmail(String email){this.email = email;}
+
 
     @OneToMany(mappedBy = "userEntity")
     private List<DiaryEntity> diaryEntity = new ArrayList<>();
+
+
+
     public UserEntity(){}
     public UserEntity(String name, String email){
         this.name = name;
@@ -51,6 +74,5 @@ public class UserEntity {
     }  이거 서비스 계층에서 하는걸로 옮김*/
 
 
-    public void setPreg(){ this.pregStatus = true;
-    }
+
 }
