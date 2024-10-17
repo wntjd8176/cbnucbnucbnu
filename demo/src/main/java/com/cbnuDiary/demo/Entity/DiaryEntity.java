@@ -46,7 +46,7 @@ public class DiaryEntity {
    public void setDtitle(String dtitle){this.dtitle=dtitle;}
     public void setCreatedDate(LocalDateTime createdDate){this.createdDate=createdDate;}
 
-    public void setEmotions(int emotion){this.emotion = emotion;}
+    public void setEmotions(int emotion){this.emotions = emotion;}
 
     public String getDtitle(){return dtitle;}
     public String getDiaryContent(){return diaryContent;}

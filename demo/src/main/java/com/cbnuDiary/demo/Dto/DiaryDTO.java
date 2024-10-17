@@ -1,5 +1,6 @@
 package com.cbnuDiary.demo.Dto;
 
+import com.cbnuDiary.demo.Repository.DiaryRepository;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class DiaryDTO {
+
+    public DiaryDTO(){}
+
  public Long diaryID;
  public String dtitle;
  public String diaryContent;

@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface PostService {
-    public PostEntity convertToEntity(PostDTO postDTO);
+   // public PostEntity convertToEntity(PostDTO postDTO);
     public void writePost(UserDTO userDTO, PostDTO postDTO);
-    public void deletePost();
+  /*  public void deletePost();
 
     public void readPost();
 
-    public void searchPost();
+    public void searchPost();*/
 }

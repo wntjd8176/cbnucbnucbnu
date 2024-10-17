@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void findID(String name , String email) {
-        Optional<UserEntity> user = userRepository.findBynameAndemail(name, email);
+        Optional<UserEntity> user = userRepository.findByNameAndEmail(name, email);
 
         // 사용자가 존재하지 않는 경우 예외를 던집니다.
         UserEntity userEntity = user.orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));

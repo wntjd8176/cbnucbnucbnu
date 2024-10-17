@@ -21,7 +21,7 @@ public class DiaryServiceImpl implements DiaryService{
 
 
     private final DiaryRepository diaryRepository;
-    private  final DiaryDTO diaryDTO;
+   // private  final DiaryDTO diaryDTO;
 
     private final DiaryDAO diaryDAO;
     /*@Autowired  RequiredArgsConstructor가 생성자 주입해준다.

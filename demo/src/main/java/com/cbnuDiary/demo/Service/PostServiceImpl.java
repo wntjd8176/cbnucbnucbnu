@@ -16,12 +16,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void writePost(UserDTO userDTO, PostDTO postDTO) {
-        if (userService.checkUserExist(userDTO)) {
+      /*  if (userService.checkUserExist(userDTO)) {
             PostEntity postEntity = convertToEntity(postDTO);
             postDAO.insertPost(postEntity);
 
         }
 
-    }
+    }*/
 
+    }
 }

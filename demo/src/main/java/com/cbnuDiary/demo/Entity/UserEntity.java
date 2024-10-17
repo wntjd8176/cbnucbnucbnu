@@ -46,7 +46,8 @@ public class UserEntity {
 
     public String getUserPW(){return userPW;}
     public String getUserID(){return userID;}
-
+   public String getEmail(){return email;}
+    public String  getName(){return name;}
     public void setBabyName(String babyName) {
         this.babyName = babyName;
     }
