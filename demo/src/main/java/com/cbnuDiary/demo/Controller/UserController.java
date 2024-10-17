@@ -42,6 +42,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이메일 전송 중 오류가 발생했습니다.");
         }
     }
+ @RequestMapping(value = "/loginApp",method = RequestMethod.POST)
+ public ResponseEntity<String> login(@RequestParam String userID, @RequestParam String userPW){
+     boolean isAuthenticated = userService.loginApp(userID, userPW);
+     if (isAuthenticated) {
+         return ResponseEntity.ok("Login successful");
+     } else {
+         return ResponseEntity.status(401).body("Invalid credentials");
+     }
+ }
+
 
 
    @RequestMapping(value ="/updatePW/{userID}",method = RequestMethod.PUT)
@@ -65,7 +75,7 @@ public class UserController {
 
    @RequestMapping(value="/changeEmail",method = RequestMethod.PUT)
    public ResponseEntity<String> updateEmail(@RequestParam String userID,@RequestParam String newEmail){
-       userService.updateEmail(newEmail);
+       userService.updateEmail(userID,newEmail);
        return new ResponseEntity<>("Email updated successfully", HttpStatus.OK);
    }
 

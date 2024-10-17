@@ -23,6 +23,11 @@ public class UserDAOImpl implements UserDAO {
         return true;
 
     }
+    @Override
+    public boolean checkUserCredentials(String userID, String userPW) {
+        Optional<UserEntity> user = userRepository.findByUserIDAndUserPW(userID, userPW);
+        return user.isPresent();  // 데이터가 존재하면 true, 없으면 false 반환
+    }
 
     @Override
     public boolean existByUserID(String tmpUserID){

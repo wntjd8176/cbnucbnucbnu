@@ -12,10 +12,10 @@ import java.util.Optional;
 public interface DiaryService {
     public DiaryEntity convertToEntity(DiaryDTO diaryDTO);
     public DiaryDTO convertToDto(DiaryEntity diaryEntity);
-    public DiaryDTO getDiaryOrNull(DiaryDTO diaryDTO);
+   // public DiaryDTO getDiaryOrNull(DiaryDTO diaryDTO);
     public void deleteDiary(DiaryDTO diaryDTO);
 
-    public void selectEmotion(int Emotion);
+    public void selectEmotion(Long diaryID,int Emotion);
 
     public void writeDiary(DiaryDTO diaryDTO);
     public void updateDiary(DiaryDTO diaryDTO);

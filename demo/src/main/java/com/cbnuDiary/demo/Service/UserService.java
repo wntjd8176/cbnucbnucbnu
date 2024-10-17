@@ -20,7 +20,7 @@ public interface UserService {
 
     public void updateEmail(String userID,String newEmail);
     public void updateEventDay(String eventDay);
-    public void loginCafe(UserDTO userDTO);
+    public boolean loginApp(String userID, String userPW);
 
     public void withdraw(String userID,String userPW);
 

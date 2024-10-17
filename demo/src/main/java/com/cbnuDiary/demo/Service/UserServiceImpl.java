@@ -97,7 +97,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void loginCafe(UserDTO userDTO){
+    public boolean loginApp(String userID , String userPW){
+        return userDAO.checkUserCredentials(userID, userPW);
 
     }
 

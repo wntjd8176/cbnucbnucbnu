@@ -21,6 +21,7 @@ public class DiaryServiceImpl implements DiaryService{
 
 
     private final DiaryRepository diaryRepository;
+    private  final DiaryDTO diaryDTO;
 
     private final DiaryDAO diaryDAO;
     /*@Autowired  RequiredArgsConstructor가 생성자 주입해준다.
@@ -102,6 +103,7 @@ public class DiaryServiceImpl implements DiaryService{
 
         diaryDAO.update(existDiary);
     }
+    /*
     @Override    //이거랑 밑에 read부분은 차후에 일기객체를 선택할시,보여주는 메소드로 쓸 수 있을듯
     public DiaryDTO getDiaryOrNull(DiaryDTO diaryDTO) {
         // Optional 처리
@@ -111,7 +113,7 @@ public class DiaryServiceImpl implements DiaryService{
         return diaryEntityOpt
                 .map(this::convertToDto) // DiaryEntity -> DiaryDTO 변환 메소드
                 .orElse(null);
-    }
+    } */
     @Override
     public DiaryEntity readDiary(DiaryDTO diaryDTO){
         String diaryTitle = diaryDTO.getDtitle();
