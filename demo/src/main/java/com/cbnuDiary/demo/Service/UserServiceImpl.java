@@ -1,6 +1,9 @@
 package com.cbnuDiary.demo.Service;
 
+import com.cbnuDiary.demo.Controller.CounselingController;
 import com.cbnuDiary.demo.Dao.UserDAO;
+import com.cbnuDiary.demo.Dto.CounselingCenterDTO;
+import com.cbnuDiary.demo.Dto.GpsDTO;
 import com.cbnuDiary.demo.Dto.UserDTO;
 import com.cbnuDiary.demo.Entity.UserEntity;
 import com.cbnuDiary.demo.Exception.UserNotFoundException;
@@ -12,21 +15,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 
-
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
-   private  final PasswordEncoder passwordEncoder;
+    private  final ThreeNoticeService threeNoticeService;
+    private final CounselingController counselingController;
+    private final RestTemplate restTemplate;
+    private  final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     private final UserDAO userDAO;
 
     private final NaverMailService naverMailService;
+
+    private  final WarningService warningService;
 
     /*@Autowired
     public UserServiceImpl(UserDAO userDAO) {
@@ -39,7 +48,20 @@ public class UserServiceImpl implements UserService {
         userEntity.setname(userDTO.getName());
         userEntity.setemail(userDTO.getEmail());
         userEntity.setuserPW(userDTO.getUserPW());
+        userEntity.setPregStatus(userDTO.getPreg());
         return userEntity;
+    }
+    @Override
+    public UserDTO convertToDTO(UserEntity userEntity) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserID(userEntity.getUserID());
+        userDTO.setUserPW(userEntity.getUserPW());
+        userDTO.setEmail(userEntity.getEmail());
+        userDTO.setName(userEntity.getName());
+        userDTO.setPreg(userEntity.getPregStatus());
+        // 필요한 다른 필드도 설정...
+
+        return userDTO;
     }
 
     @Override
@@ -49,6 +71,17 @@ public class UserServiceImpl implements UserService {
         }
         UserEntity userEntity = convertToEntity(userDTO);
         userDAO.insert(userEntity);
+    }
+
+    public void incrementDepressCount(String userID){
+        Optional<UserEntity> userEntityOptional = userRepository.findByuserID(userID);
+        if (userEntityOptional.isPresent()) {
+            UserEntity userEntity = userEntityOptional.get();
+            userEntity.setDepressCnt(userEntity.getDepressCnt() + 1); // depresscnt 증가
+            userRepository.save(userEntity); // 변경된 사용자 정보를 DB에 저장
+        } else {
+            throw new RuntimeException("사용자를 찾을 수 없습니다: " + userID); // 예외 처리
+        }
     }
 
     @Override
@@ -161,6 +194,40 @@ public class UserServiceImpl implements UserService {
 
 
    }
+
+   @Transactional
+    @Override
+    public void checkDepression(UserEntity userEntity) {
+       if(userEntity.getDepressCnt() ==3){
+         //  String fcmToken = userEntity.getFcmToken();  // 사용자의 FCM 토큰을 가져옵니다.  아래꺼랑 선택해서쓰기
+         //  threeNoticeService.sendDepressionAlert(fcmToken);
+           // warningService.sendPushNotification(deviceToken, "우울감 알림", "우울감이 감지되었습니다. 상담이 필요할 수 있습니다.");
+        }
+        /*
+        if (userEntity.getDepressCnt() == 5) {
+            // Android Studio로 GPS 요청
+            String url = "http://android-device/api/user/gps"; // Android API 주소
+            GpsDTO gpsDTO = restTemplate.getForObject(url, GpsDTO.class);
+
+            // GPS 정보를 이용해 상담소 목록을 조회하고 다시 Android로 전송
+            List<CounselingCenterDTO> centers = counselingController.getCounselingCenters(gpsDTO).getBody();
+            sendCentersToAndroid(centers);
+        }*/
+    }
+
+
+    @Override
+    public void sendCentersToAndroid(List<CounselingCenterDTO> centers) {
+        String url = "http://android-device/api/counseling/centers"; // Android API 주소
+        restTemplate.postForObject(url, centers, Void.class);
+    }
+
+    @Override
+    public UserDTO getUserByID(String userID) {
+        // userRepository를 사용하여 DB에서 사용자 정보를 조회
+        Optional<UserEntity> userEntityOptional = userRepository.findByuserID(userID);
+        return userEntityOptional.map(this::convertToDTO).orElse(null);
+    }
 
 }
     /*@Override

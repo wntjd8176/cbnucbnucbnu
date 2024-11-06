@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface DiaryRepository extends JpaRepository<DiaryEntity,Long> {
     void deleteBydtitle(String dtitle);
     DiaryEntity findBydtitle(String dtitle);
+
     List<DiaryEntity> findByUserEntity_userID(String userID);
 
 

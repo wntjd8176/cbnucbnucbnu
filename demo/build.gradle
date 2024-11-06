@@ -36,6 +36,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.security:spring-security-crypto:5.7.1'
+	implementation 'com.google.firebase:firebase-admin:9.2.0'
+	implementation 'org.json:json:20230618'
+	//implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'

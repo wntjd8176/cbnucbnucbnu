@@ -3,6 +3,7 @@ package com.cbnuDiary.demo.Controller;
 import com.cbnuDiary.demo.Dto.UserChartDTO;
 import com.cbnuDiary.demo.Dto.UserDTO;
 import com.cbnuDiary.demo.Exception.UserNotFoundException;
+import com.cbnuDiary.demo.Service.DiaryService;
 import com.cbnuDiary.demo.Service.UserChartService;
 import com.cbnuDiary.demo.Service.UserChartServiceImpl;
 import com.cbnuDiary.demo.Service.UserService;
@@ -20,6 +21,8 @@ import com.cbnuDiary.demo.Exception.userIDAlreadyExistsException;
 public class UserController {
     private final UserService userService;
     private final UserChartService userChartService;
+
+    private  final DiaryService diaryService;
 
     // @RequestMapping("/api/users")
   /*  @Autowired
@@ -86,8 +89,8 @@ public class UserController {
     public ResponseEntity<UserChartDTO> registerUser(@RequestBody UserDTO userDTO) {
         try {
             userService.registerUser(userDTO);
-            UserChartDTO userChartDTO = userChartService.createUserChart(userDTO);
-            return ResponseEntity.ok(userChartDTO);
+           // UserChartDTO userChartDTO = userChartService.createUserChart(userDTO);
+            return ResponseEntity.ok().build();
         } catch (userIDAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build(); //404
 
@@ -102,5 +105,22 @@ public class UserController {
 
         userChartService.saveUserChart(userChartDTO);
         return ResponseEntity.ok("특성표가 저장되었습니다.");
+    }
+
+    @RequestMapping(value = "updateDepressCnt",method =RequestMethod.POST )
+    public ResponseEntity<Void> updateDepressCount(@RequestParam int result, @RequestParam String userID) {
+        try {
+            if (result == 4) { // 감정 분석 결과가 우울감인 경우
+                userService.incrementDepressCount(userID); // 유저의 depresscnt 증가
+                diaryService.setResultEmotion(userID,result);
+                //userChartRepository.save(result)
+                return ResponseEntity.ok().build();
+            } else {
+                diaryService.setResultEmotion(userID,result);
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

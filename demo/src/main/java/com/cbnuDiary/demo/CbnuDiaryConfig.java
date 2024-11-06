@@ -6,6 +6,7 @@ import com.cbnuDiary.demo.Dao.UserDAO;
 import com.cbnuDiary.demo.Dao.UserDAOImpl;
 import com.cbnuDiary.demo.Repository.DiaryRepository;
 import com.cbnuDiary.demo.Repository.UserRepository;
+import com.cbnuDiary.demo.Service.DiaryService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +27,11 @@ public class CbnuDiaryConfig {
     public CbnuDiaryConfig(UserRepository userRepository,DiaryRepository diaryRepository){
         this.userRepository=userRepository;
         this.diaryRepository = diaryRepository;
+
     }
+
+
+
     @Bean
     public UserDAO userDAOImpl(UserRepository userRepository){
         return new UserDAOImpl(userRepository);
@@ -39,4 +44,8 @@ public class CbnuDiaryConfig {
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder(); // BCrypt 사용
     }
+  /*  @Bean
+    public DiaryService diaryService(DiaryRepository diaryRepository) {
+        return new DiaryService(diaryRepository); // DiaryService의 생성자가 DiaryRepository를 받는다고 가정
+    }*/
 }

@@ -18,10 +18,13 @@ public interface DiaryService {
     public void selectEmotion(Long diaryID,int Emotion);
 
     public void writeDiary(DiaryDTO diaryDTO);
+    public void writeDiaryTest(DiaryDTO diaryDTO);
     public void updateDiary(DiaryDTO diaryDTO);
     public DiaryEntity readDiary(DiaryDTO diaryDTO);
 
     public List<DiaryEntity> viewDiaryList(UserDTO userDTO);
 
+    public void setResultEmotion(String userID,int resultEmotion);
+    public DiaryEntity convertToEntityTest(DiaryDTO diaryDTO);
 
 }

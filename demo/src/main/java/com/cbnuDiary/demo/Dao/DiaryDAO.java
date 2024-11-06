@@ -6,6 +6,7 @@ import com.cbnuDiary.demo.Entity.DiaryEntity;
 
 public interface DiaryDAO {
     public boolean insert(DiaryDTO diaryDTO);
+    public boolean insertTest(DiaryDTO diaryDTO);
     public void update(DiaryEntity diaryEntity);
     public void deleteByDtitle(DiaryEntity diaryEntity);
 

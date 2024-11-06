@@ -5,10 +5,13 @@ import com.cbnuDiary.demo.Dto.UserChartDTO;
 import com.cbnuDiary.demo.Dto.UserDTO;
 import com.cbnuDiary.demo.Entity.UserChartEntity;
 import com.cbnuDiary.demo.Entity.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+
 public class UserChartServiceImpl implements UserChartService{
+    UserChartDAO userChartDAO;
     @Override
     public UserChartDTO createUserChart(UserDTO userDTO){
      UserChartDTO userChartDTO = new UserChartDTO();
@@ -19,6 +22,7 @@ public class UserChartServiceImpl implements UserChartService{
     @Override
     public void saveUserChart(UserChartDTO userChartDTO){
        UserChartEntity userChartEntity = convertToEntity(userChartDTO);
+       userChartDAO.insert(userChartEntity);
     }
 
     @Override

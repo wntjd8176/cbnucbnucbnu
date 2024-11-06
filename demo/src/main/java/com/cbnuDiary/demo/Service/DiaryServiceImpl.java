@@ -7,9 +7,11 @@ import com.cbnuDiary.demo.Dto.UserDTO;
 import com.cbnuDiary.demo.Entity.DiaryEntity;
 import com.cbnuDiary.demo.Entity.UserEntity;
 import com.cbnuDiary.demo.Repository.DiaryRepository;
+import com.cbnuDiary.demo.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +24,7 @@ public class DiaryServiceImpl implements DiaryService{
 
     private final DiaryRepository diaryRepository;
    // private  final DiaryDTO diaryDTO;
-
+   private  final UserRepository userRepository;
     private final DiaryDAO diaryDAO;
     /*@Autowired  RequiredArgsConstructor가 생성자 주입해준다.
     public DiaryServiceImpl(DiaryDAO diaryDAO) {
@@ -33,9 +35,26 @@ public class DiaryServiceImpl implements DiaryService{
     public DiaryEntity convertToEntity(DiaryDTO diaryDTO){
         DiaryEntity diaryEntity = new DiaryEntity();
         diaryEntity.setdiaryContent(diaryDTO.getDiaryContent());
-       /* diaryEntity.setdtitle(diaryDTO.getName());
-        diaryEntity.setemail(diaryDTO.getEmail());
-        diaryEntity.setuserPW(diaryDTO.getUserPW());*/
+        diaryEntity.setDtitle(diaryDTO.getDtitle());
+
+        UserEntity userEntity = userRepository.findByuserID(diaryDTO.getDiaryUserID())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + diaryDTO.getDiaryUserID()));
+        diaryEntity.setUserEntity(userEntity);
+        diaryEntity.setdiaryUserID(userEntity.getUserID());
+        return diaryEntity;
+    }
+    @Override
+    public DiaryEntity convertToEntityTest(DiaryDTO diaryDTO){
+        DiaryEntity diaryEntity = new DiaryEntity();
+        diaryEntity.setdiaryContent(diaryDTO.getDiaryContent());
+        diaryEntity.setDtitle(diaryDTO.getDtitle());
+
+
+        diaryEntity.setdiaryUserID(diaryDTO.getDiaryUserID());
+        diaryEntity.setCreatedDate(diaryDTO.getCreatedDate());
+        diaryEntity.setEmotions(diaryDTO.getEmotions());
+        diaryEntity.setResultEmotion(diaryDTO.getResultEmotion());
+
         return diaryEntity;
     }
     @Override
@@ -61,7 +80,10 @@ public class DiaryServiceImpl implements DiaryService{
     }
 
 
+  @Override
+  public void setResultEmotion(String userID,int resultEmotion){
 
+  }
 
 
     @Override
@@ -76,19 +98,45 @@ public class DiaryServiceImpl implements DiaryService{
         if (diaryDTO.getDtitle() == null || diaryDTO.getDtitle().isEmpty()) {
             throw new IllegalArgumentException("제목은 비어 있을 수 없습니다.");
         }
+
             diaryDTO.setCreatedDate(LocalDateTime.now());
+
 
 
             diaryDAO.insert(diaryDTO);
 
     }
+
+    @Transactional
+    @Override
+    public void writeDiaryTest(DiaryDTO diaryDTO) {
+
+        if (diaryDTO.getDtitle() == null || diaryDTO.getDtitle().isEmpty()) {
+            throw new IllegalArgumentException("제목은 비어 있을 수 없습니다.");
+        }
+        diaryDTO.setCreatedDate(LocalDateTime.now());
+
+        DiaryEntity diaryEntity = new DiaryEntity();
+        diaryEntity.setdiaryContent(diaryDTO.getDiaryContent());
+        diaryEntity.setDtitle(diaryDTO.getDtitle());
+
+
+        diaryEntity.setdiaryUserID(diaryDTO.getDiaryUserID());
+        diaryEntity.setCreatedDate(diaryDTO.getCreatedDate());
+        diaryEntity.setEmotions(diaryDTO.getEmotions());
+        diaryEntity.setResultEmotion(diaryDTO.getResultEmotion());
+
+        diaryRepository.save(diaryEntity);
+        //diaryDAO.insertTest(diaryDTO);
+
+    }
     @Override
     public void updateDiary(DiaryDTO diaryDTO){
-        DiaryEntity existDiary = diaryRepository.findBydiaryID(diaryDTO.getDiaryID())
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 일기를 찾을 수 없습니다."));
+        DiaryEntity existDiary = diaryRepository.findBydtitle(diaryDTO.getDtitle());
+
 
         if (existDiary == null) {
-            throw new IllegalArgumentException("해당 ID의 일기를 찾을 수 없습니다.");
+            throw new IllegalArgumentException("해당 제목의 일기를 찾을 수 없습니다.");
         }
 
         if (diaryDTO.getDtitle() != null && !diaryDTO.getDtitle().isEmpty()) {

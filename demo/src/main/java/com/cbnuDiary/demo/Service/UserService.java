@@ -1,13 +1,17 @@
 package com.cbnuDiary.demo.Service;
 
+import com.cbnuDiary.demo.Dto.CounselingCenterDTO;
 import com.cbnuDiary.demo.Dto.UserDTO;
 import com.cbnuDiary.demo.Entity.UserEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface UserService {
     public void registerUser(UserDTO userDTO);
     public UserEntity convertToEntity(UserDTO userDTO);
+    public UserDTO convertToDTO(UserEntity userEntity);
     public void updatePregStatus(String extractedText, String userID);
    // public boolean checkUserExist(UserDTO userDTO);
     public void updateBabyName(String userName,String newBabyName);
@@ -23,6 +27,9 @@ public interface UserService {
     public boolean loginApp(String userID, String userPW);
 
     public void withdraw(String userID,String userPW);
-
+    public void checkDepression(UserEntity user);
+    public void sendCentersToAndroid(List<CounselingCenterDTO> centers);
+    public void incrementDepressCount(String userID);
+    public UserDTO getUserByID(String userID);
 
 }

@@ -16,7 +16,7 @@ public class UserChartEntity {
     @JoinColumn(name = "userID")
     private UserEntity userEntity;
 
-    public String favoriteWord;
+    public String favoriteWord;  //3글자로 제한주기
     public String unFavoriteWord;
 
     public UserChartEntity(){}

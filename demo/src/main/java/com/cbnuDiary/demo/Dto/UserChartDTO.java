@@ -13,6 +13,7 @@ public class UserChartDTO {
     public String unFavoriteWord;
 
 
+
     public String getUnFavoriteWord() {
         return unFavoriteWord;
     }

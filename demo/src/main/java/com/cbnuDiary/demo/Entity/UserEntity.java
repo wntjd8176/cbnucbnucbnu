@@ -12,18 +12,21 @@ import java.util.List;
 
 @Entity
 public class UserEntity {
-    @Id  //이 어노테이션때문에 db에 1씩올라감
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long userNumberID;
+      //이 어노테이션때문에 db에 1씩올라감
 
+
+    public Long userNumberID; //이거 1씩증가되게 할필요 있음 1103
+
+    @Id
+    @Column(name = "user_id")
     public String userID;
     @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserChartEntity userChartEntity;
 
     public String name;
     public String email;
-    public int pregStatus;
-
+    public int pregStatus=0;
+    public int depressCnt;
     public String userPW;
 
     public String babyName;
@@ -44,17 +47,23 @@ public class UserEntity {
     }
     public void setPregStatus(int pregStatus){this.pregStatus = pregStatus;}
 
+    public void setDepressCnt(int depressCnt){this.depressCnt = depressCnt;}
+
     public String getUserPW(){return userPW;}
     public String getUserID(){return userID;}
    public String getEmail(){return email;}
     public String  getName(){return name;}
+    public String getBabyName() {
+        return babyName;
+    }
+
+    public int getDepressCnt(){return  depressCnt;}
     public void setBabyName(String babyName) {
         this.babyName = babyName;
     }
 
-    public String getBabyName() {
-        return babyName;
-    }
+
+
 
     public int getPregStatus(){return pregStatus;}
     public void setEmail(String email){this.email = email;}

@@ -6,24 +6,38 @@ import com.cbnuDiary.demo.Entity.DiaryEntity;
 import com.cbnuDiary.demo.Entity.UserEntity;
 import com.cbnuDiary.demo.Repository.DiaryRepository;
 import com.cbnuDiary.demo.Repository.UserRepository;
+import com.cbnuDiary.demo.Service.DiaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
 public class DiaryDAOImpl implements DiaryDAO {
     DiaryRepository diaryRepository;
+   // DiaryService diaryService;
 
     @Autowired
-    public DiaryDAOImpl(DiaryRepository diaryRepository) {
+    public DiaryDAOImpl(DiaryRepository diaryRepository ) {
         this.diaryRepository = diaryRepository;
+
     }
 
     @Override
     public boolean insert(DiaryDTO diaryDto) {
-        DiaryEntity diaryEntity = new DiaryEntity(diaryDto.getDiaryID(), diaryDto.getDtitle());
-        diaryRepository.save(diaryEntity);
+      // DiaryEntity diaryEntity = diaryService.convertToEntity(diaryDto);   //1103
 
-        return true;
+       // diaryRepository.save(diaryDto);
+
+       return true;
+
+    }
+    @Override
+    public boolean insertTest(DiaryDTO diaryDto) {
+
+      //  DiaryEntity diaryEntity = diaryService.convertToEntityTest(diaryDto);
+      //  diaryRepository.save(diaryDto);
+
+      //  System.out.println("Diary saved: " + diaryDto);
+       return true;
 
     }
     @Override

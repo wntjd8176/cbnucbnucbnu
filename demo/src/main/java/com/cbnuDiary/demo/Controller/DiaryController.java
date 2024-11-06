@@ -1,8 +1,12 @@
 package com.cbnuDiary.demo.Controller;
 
 import com.cbnuDiary.demo.Dto.DiaryDTO;
+
+import com.cbnuDiary.demo.Dto.DiaryRequestDTO;
 import com.cbnuDiary.demo.Entity.DiaryEntity;
+import com.cbnuDiary.demo.Entity.UserChartEntity;
 import com.cbnuDiary.demo.Repository.DiaryRepository;
+import com.cbnuDiary.demo.Repository.UserChartRepository;
 import com.cbnuDiary.demo.Service.DiaryService;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -15,15 +19,29 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 @RestController
-@RequiredArgsConstructor
+
 @RequestMapping("/diary")
 public class DiaryController {
 
-    private final RestTemplate restTemplate;
-    private final DiaryRepository diaryRepository;
-    private final DiaryService diaryService;
+    private RestTemplate restTemplate;
+    private  DiaryRepository diaryRepository;
+    private  DiaryService diaryService;
 
-    private static final String MODEL_SERVER_URL = "http://192.168.0.100:5000/write"; //이거 주소수정
+    private  UserChartRepository userChartRepository;
+
+    @Autowired
+    public DiaryController(RestTemplate restTemplate, DiaryRepository diaryRepository,
+                           DiaryService diaryService, UserChartRepository userChartRepository) {
+        this.restTemplate = restTemplate;
+        this.diaryRepository = diaryRepository;
+        this.diaryService = diaryService;
+        this.userChartRepository = userChartRepository;
+    }
+
+
+    private static final String MODEL_SERVER_URL = "http://150.230.251.172:5000/predict";
+
+
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteDiary(@RequestBody DiaryDTO diaryDTO) {
@@ -83,17 +101,22 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Diary not found.");
         }*/
     }
-
+    //일기작성 컨트롤러
     @RequestMapping(value = "/write", method = RequestMethod.POST) //이 부분 수정필요
     public ResponseEntity<String> writeDiary(@RequestBody DiaryDTO diaryDTO) {
         try {
-            diaryService.writeDiary(diaryDTO);
+            //여기 수정해야함 ai모델에 먼저 일기를 보내고 result_emotion값을 diary에 넣어야 db에 들어감
+
+            diaryService.writeDiary(diaryDTO);  //우선 프론트에서 넘겨받은 작성된 일기를 저장함
+            UserChartEntity userChartEntity = userChartRepository.findByUserEntity_userID(diaryDTO.getDiaryUserID())
+                    .orElseThrow(() -> new RuntimeException("UserChartEntity not found"));
+            DiaryRequestDTO diaryRequestDTO = new DiaryRequestDTO(diaryDTO, userChartEntity);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             // HTTP 요청 본문에 DiaryDTO를 설정
-            HttpEntity<DiaryDTO> requestEntity = new HttpEntity<>(diaryDTO, headers); //JSON으로 바꿈
+            HttpEntity<DiaryRequestDTO> requestEntity = new HttpEntity<>(diaryRequestDTO, headers); //JSON으로 바꿈
 
             ResponseEntity<String> response = restTemplate.exchange(
                     MODEL_SERVER_URL, //인공지능 서버 url
@@ -109,7 +132,27 @@ public class DiaryController {
             // 에러 발생 시 예외 처리
             return ResponseEntity.status(500).body("모델 요청 실패: " + e.getMessage());
         }
-
     }
-}
+        @RequestMapping(value = "/write2", method = RequestMethod.POST) //테스트용
+        public ResponseEntity<String> write2Diary (@RequestBody DiaryDTO diaryDTO){
+            System.out.println("Received request to write diary.");
+            try {
+                diaryService.writeDiaryTest(diaryDTO);  //우선 프론트에서 넘겨받은 작성된 일기를 저장함
+
+
+                System.out.println("Diary successfully saved."); // 성공적인 저장 로그
+
+                // 성공 응답 반환
+                return ResponseEntity.ok("일기가 성공적으로 저장되었습니다.");
+
+            } catch (Exception e) {
+                e.printStackTrace(); // 에러 출력
+                // 에러 발생 시 예외 처리
+                return ResponseEntity.status(500).body("일기 저장 실패: " + e.getMessage());
+            }
+
+
+        }
+    }
+
 
