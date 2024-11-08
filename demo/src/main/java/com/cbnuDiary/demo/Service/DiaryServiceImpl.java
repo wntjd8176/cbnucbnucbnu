@@ -25,6 +25,7 @@ public class DiaryServiceImpl implements DiaryService{
     private final DiaryRepository diaryRepository;
    // private  final DiaryDTO diaryDTO;
    private  final UserRepository userRepository;
+    private final ThreeNoticeService threeNoticeService;
     private final DiaryDAO diaryDAO;
     /*@Autowired  RequiredArgsConstructor가 생성자 주입해준다.
     public DiaryServiceImpl(DiaryDAO diaryDAO) {
@@ -114,6 +115,9 @@ public class DiaryServiceImpl implements DiaryService{
         if (diaryDTO.getDtitle() == null || diaryDTO.getDtitle().isEmpty()) {
             throw new IllegalArgumentException("제목은 비어 있을 수 없습니다.");
         }
+        UserEntity userEntity = userRepository.findByuserID(diaryDTO.getDiaryUserID())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
         diaryDTO.setCreatedDate(LocalDateTime.now());
 
         DiaryEntity diaryEntity = new DiaryEntity();
@@ -127,6 +131,10 @@ public class DiaryServiceImpl implements DiaryService{
         diaryEntity.setResultEmotion(diaryDTO.getResultEmotion());
 
         diaryRepository.save(diaryEntity);
+
+        if (userEntity.getDepressCnt() == 3) {
+            threeNoticeService.sendDepressionAlert(userEntity.getFcmToken());
+        }
         //diaryDAO.insertTest(diaryDTO);
 
     }

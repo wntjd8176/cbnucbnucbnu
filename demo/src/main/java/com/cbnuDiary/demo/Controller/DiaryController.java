@@ -24,10 +24,10 @@ import java.util.Optional;
 public class DiaryController {
 
     private RestTemplate restTemplate;
-    private  DiaryRepository diaryRepository;
-    private  DiaryService diaryService;
+    private DiaryRepository diaryRepository;
+    private DiaryService diaryService;
 
-    private  UserChartRepository userChartRepository;
+    private UserChartRepository userChartRepository;
 
     @Autowired
     public DiaryController(RestTemplate restTemplate, DiaryRepository diaryRepository,
@@ -42,7 +42,6 @@ public class DiaryController {
     private static final String MODEL_SERVER_URL = "http://150.230.251.172:5000/predict";
 
 
-
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteDiary(@RequestBody DiaryDTO diaryDTO) {
         diaryService.deleteDiary(diaryDTO);
@@ -51,7 +50,7 @@ public class DiaryController {
 
     }
 
-    @RequestMapping(value ="/titleread",method = RequestMethod.GET)
+    @RequestMapping(value = "/titleread", method = RequestMethod.GET)
     public ResponseEntity<DiaryDTO> readDiary(@RequestParam String diarytitle) {
         //제목에 맞는 diaryEntity를 가져온다음 그걸 다시 dto로 바꿔준다.
         DiaryEntity diaryEntity = diaryRepository.findBydtitle(diarytitle);
@@ -73,12 +72,12 @@ public class DiaryController {
         return ResponseEntity.ok(result);
     }
 
-    @RequestMapping (value = "/update", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateDiary(@PathVariable Long id, @RequestBody DiaryDTO updatedDiaryDTO){
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateDiary(@PathVariable Long id, @RequestBody DiaryDTO updatedDiaryDTO) {
         try {
             diaryService.updateDiary(updatedDiaryDTO);
             return ResponseEntity.ok("수정완료");
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("실패: " + e.getMessage());
         }
        /* Optional<DiaryEntity> existingDiary = diaryRepository.findById(id);
@@ -101,13 +100,14 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Diary not found.");
         }*/
     }
+
     //일기작성 컨트롤러
     @RequestMapping(value = "/write", method = RequestMethod.POST) //이 부분 수정필요
     public ResponseEntity<String> writeDiary(@RequestBody DiaryDTO diaryDTO) {
         try {
             //여기 수정해야함 ai모델에 먼저 일기를 보내고 result_emotion값을 diary에 넣어야 db에 들어감
 
-            diaryService.writeDiary(diaryDTO);  //우선 프론트에서 넘겨받은 작성된 일기를 저장함
+           // diaryService.writeDiary(diaryDTO);  //우선 프론트에서 넘겨받은 작성된 일기를 저장함
             UserChartEntity userChartEntity = userChartRepository.findByUserEntity_userID(diaryDTO.getDiaryUserID())
                     .orElseThrow(() -> new RuntimeException("UserChartEntity not found"));
             DiaryRequestDTO diaryRequestDTO = new DiaryRequestDTO(diaryDTO, userChartEntity);
@@ -133,26 +133,40 @@ public class DiaryController {
             return ResponseEntity.status(500).body("모델 요청 실패: " + e.getMessage());
         }
     }
-        @RequestMapping(value = "/write2", method = RequestMethod.POST) //테스트용
-        public ResponseEntity<String> write2Diary (@RequestBody DiaryDTO diaryDTO){
-            System.out.println("Received request to write diary.");
-            try {
-                diaryService.writeDiaryTest(diaryDTO);  //우선 프론트에서 넘겨받은 작성된 일기를 저장함
+
+    @RequestMapping(value = "/write2", method = RequestMethod.POST) //테스트용
+    public ResponseEntity<String> write2Diary(@RequestBody DiaryDTO diaryDTO) {
+        System.out.println("Received request to write diary.");
+        try {
+            diaryService.writeDiaryTest(diaryDTO);  //우선 프론트에서 넘겨받은 작성된 일기를 저장함
 
 
-                System.out.println("Diary successfully saved."); // 성공적인 저장 로그
+            System.out.println("Diary successfully saved."); // 성공적인 저장 로그
 
-                // 성공 응답 반환
-                return ResponseEntity.ok("일기가 성공적으로 저장되었습니다.");
+            // 성공 응답 반환
+            return ResponseEntity.ok("일기가 성공적으로 저장되었습니다.");
 
-            } catch (Exception e) {
-                e.printStackTrace(); // 에러 출력
-                // 에러 발생 시 예외 처리
-                return ResponseEntity.status(500).body("일기 저장 실패: " + e.getMessage());
-            }
-
-
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 출력
+            // 에러 발생 시 예외 처리
+            return ResponseEntity.status(500).body("일기 저장 실패: " + e.getMessage());
         }
+
+
     }
+
+    @RequestMapping(value = "/saveDiary", method = RequestMethod.POST)
+    public ResponseEntity<String> saveDiary(@RequestBody DiaryDTO diaryDTO) {
+        try {
+            diaryService.writeDiaryTest(diaryDTO);
+            return ResponseEntity.ok("일기가 성공적으로 저장되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 출력
+            // 에러 발생 시 예외 처리
+            return ResponseEntity.status(500).body("일기 저장 실패: " + e.getMessage());
+        }
+
+    }
+}
 
 

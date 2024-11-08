@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setemail(userDTO.getEmail());
         userEntity.setuserPW(userDTO.getUserPW());
         userEntity.setPregStatus(userDTO.getPreg());
+        userEntity.setBabyName(userDTO.getBabyName());
         return userEntity;
     }
     @Override
@@ -62,6 +63,12 @@ public class UserServiceImpl implements UserService {
         // 필요한 다른 필드도 설정...
 
         return userDTO;
+    }
+
+
+    @Override
+    public boolean IDAvailable(String userID){
+        return !userRepository.existsByuserID(userID);
     }
 
     @Override
@@ -86,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePregStatus(String extractedText, String userID) {
-        if (extractedText.contains("임산부수첩")) {
+        if (extractedText.contains("임산부")) {
             // 사용자 정보 가져오기    이 부분 수정해야함 0929
             UserEntity userEntity = userRepository.findByuserID(userID).orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -199,9 +206,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void checkDepression(UserEntity userEntity) {
        if(userEntity.getDepressCnt() ==3){
-         //  String fcmToken = userEntity.getFcmToken();  // 사용자의 FCM 토큰을 가져옵니다.  아래꺼랑 선택해서쓰기
-         //  threeNoticeService.sendDepressionAlert(fcmToken);
-           // warningService.sendPushNotification(deviceToken, "우울감 알림", "우울감이 감지되었습니다. 상담이 필요할 수 있습니다.");
+           String fcmToken = userEntity.getFcmToken();  // 사용자의 FCM 토큰을 가져옵니다.  아래꺼랑 선택해서쓰기
+           threeNoticeService.sendDepressionAlert(fcmToken);
+           // warningService.sendPushNotification(fcmToken, "우울감 알림", "우울감이 감지되었습니다. 상담이 필요할 수 있습니다.");
         }
         /*
         if (userEntity.getDepressCnt() == 5) {

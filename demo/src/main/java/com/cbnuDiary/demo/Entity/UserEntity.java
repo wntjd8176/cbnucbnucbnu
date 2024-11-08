@@ -23,11 +23,16 @@ public class UserEntity {
     @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserChartEntity userChartEntity;
 
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DiaryEntity> diaries;
+
     public String name;
     public String email;
     public int pregStatus=0;
     public int depressCnt;
     public String userPW;
+    private String fcmToken;
+
 
     public String babyName;
 
@@ -46,6 +51,9 @@ public class UserEntity {
         this.email = email;
     }
     public void setPregStatus(int pregStatus){this.pregStatus = pregStatus;}
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 
     public void setDepressCnt(int depressCnt){this.depressCnt = depressCnt;}
 
@@ -58,11 +66,19 @@ public class UserEntity {
     }
 
     public int getDepressCnt(){return  depressCnt;}
+    public String getFcmToken() {
+        return fcmToken;
+    }
+    public List<DiaryEntity> getDiaries() {
+        return diaries;
+    }
     public void setBabyName(String babyName) {
         this.babyName = babyName;
     }
 
-
+    public void setDiaries(List<DiaryEntity> diaries) {
+        this.diaries = diaries;
+    }
 
 
     public int getPregStatus(){return pregStatus;}

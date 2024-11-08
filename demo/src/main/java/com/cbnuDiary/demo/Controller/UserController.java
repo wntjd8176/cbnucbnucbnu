@@ -55,7 +55,11 @@ public class UserController {
      }
  }
 
-
+    @RequestMapping(value ="/checkIDAvailability",method = RequestMethod.GET)
+    public ResponseEntity<Boolean> checkIDAvailability(@RequestParam("userID") String userID) {
+        boolean isAvailable = userService.IDAvailable(userID);
+        return ResponseEntity.ok(isAvailable);
+    }
 
    @RequestMapping(value ="/updatePW/{userID}",method = RequestMethod.PUT)
    public ResponseEntity<String> updatePW(@PathVariable String userID, @RequestParam String oldPW, @RequestParam String newPW) {
@@ -81,6 +85,7 @@ public class UserController {
        userService.updateEmail(userID,newEmail);
        return new ResponseEntity<>("Email updated successfully", HttpStatus.OK);
    }
+
 
 
 

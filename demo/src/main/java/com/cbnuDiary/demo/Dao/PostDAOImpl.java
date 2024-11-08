@@ -17,4 +17,12 @@ public class PostDAOImpl implements PostDAO{
     public void insertPost(PostEntity postEntity){
         postRepository.save(postEntity);
     }
+    @Override
+    public void deleteBypTitle(String pTitle){
+        PostEntity postEntity = postRepository.findBypTitle(pTitle);
+        postRepository.delete(postEntity);
+    }
+
+
+
 }

@@ -32,4 +32,6 @@ public interface UserService {
     public void incrementDepressCount(String userID);
     public UserDTO getUserByID(String userID);
 
+    public boolean IDAvailable(String userID);
+
 }

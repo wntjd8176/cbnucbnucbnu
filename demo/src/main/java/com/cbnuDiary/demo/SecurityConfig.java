@@ -17,7 +17,7 @@ public class SecurityConfig  {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/diary/write2","/sms/send").permitAll() // 특정 경로에 대한 인증 허용
+                        .requestMatchers("/diary/write2","/sms/send","/user/register","/user/checkIDAvailability").permitAll() // 특정 경로에 대한 인증 허용
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .csrf(csrf -> csrf.disable()); // CSRF 비활성화 (개발 시만 사용)
