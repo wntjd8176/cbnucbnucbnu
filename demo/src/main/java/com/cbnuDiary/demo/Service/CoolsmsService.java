@@ -15,8 +15,8 @@ import javax.annotation.PostConstruct;
 
 @Service
 public class CoolsmsService {
-  /* private static final String apiKey = "NCSATUR3CFF7MYYC";
-    private static final String apiSecretKey = "EODUDVG8LVD748R6WLS2T6JOKEJ4JYNP";
+  /* private static final String apiKey = "";
+    private static final String apiSecretKey = "";
     //private static final String API_URL = "https://api.coolsms.co.kr/messages/v4/send";
 
   // private DefaultMessageService messageService;
